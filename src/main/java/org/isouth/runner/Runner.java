@@ -2,6 +2,8 @@ package org.isouth.runner;
 
 public class Runner {
 
+    private String name;
+
     private Runnable app;
 
     private Runnable hook;
@@ -11,6 +13,11 @@ public class Runner {
     private volatile Thread awaitThread;
 
     private volatile boolean stopAwait;
+
+    public Runner withName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public Runner withHook(Runnable hook) {
         this.hook = hook;
@@ -48,6 +55,9 @@ public class Runner {
 
     public Runner start() {
         Thread runner = new Thread(this::run);
+        if (this.name != null) {
+            runner.setName(this.name);
+        }
         runner.start();
         return this;
     }
